@@ -358,7 +358,7 @@
   } else { none }
   block(above: 0.2em, below: 0.2em)[
     #link(label(lbl))[
-      #pastille #h(4pt) #titre #h(1fr) #box(width: 1fr)[#repeat[.]] #h(4pt) #counter(page).at(label(lbl)).at(0)
+      #pastille #h(4pt) #titre #box(width: 1fr)[#repeat[.]] #h(4pt) #counter(page).at(label(lbl)).at(0)
     ]
   ]
 }

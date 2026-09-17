@@ -149,28 +149,64 @@
   }
 }
 
+// Une ligne de sommaire (pastille de phase + titre + points de suite +
+// numéro de page) - réutilisée par construire-sommaire/-par-type ci-dessous
+// ET par fiches-liees (voir plus bas) : un renvoi croisé en fin de fiche
+// mérite le même numéro de page, pas seulement un lien cliquable (retour
+// utilisateur, 2026-09-17 - un lecteur qui feuillette le PAPIER, sans
+// cliquer, doit pouvoir retrouver la fiche visée directement).
+#let ligne-sommaire-fiche(d, page) = {
+  let pastille = if d.phase != none {
+    box(fill: couleur-phase(d.phase), inset: (x: 3pt, y: 1pt), radius: 2pt)[
+      #text(size: 7pt, weight: "bold", fill: white)[#abrege-phase(d.phase)]
+    ]
+  } else { none }
+  block(above: 0.2em, below: 0.2em)[
+    #link(label("fiche-" + d.id))[
+      // Un seul espace flexible (1fr) rempli de points - PAS un #h(1fr) en
+      // plus du box(width:1fr) : les deux, mis côte à côte, se partageaient
+      // l'espace flexible en deux moitiés égales (un blanc invisible PUIS
+      // les points), d'où des points qui démarraient à des endroits
+      // différents d'une ligne à l'autre selon la longueur du titre - pas
+      // une ligne de points continue jusqu'au numéro de page (bug réel
+      // constaté sur le PDF rendu, retour utilisateur, 2026-09-17).
+      #pastille #h(4pt) #d.titre #box(width: 1fr)[#repeat[.]] #h(4pt) #page
+    ]
+  ]
+}
+
 // --- Fiches liées (items[].fiches_liees côté JSON) : renvois croisés en
 // fin de fiche. Le titre de la fiche visée est résolu et écrit UNE FOIS,
 // au moment de la conversion depuis le JSON (voir convert_corpus.py) -
 // pas de requête inter-fichiers à l'exécution, chaque .typ reste
 // autonome. Chaque entrée : (id, titre).
+// Numéro de page (retour utilisateur, 2026-09-17 : un simple lien, sans
+// numéro, ne suffit pas pour un lecteur qui feuillette le PAPIER plutôt que
+// de cliquer) : on réutilise ligne-sommaire-fiche (même pastille de phase +
+// points de suite + numéro que le sommaire) plutôt qu'inventer une seconde
+// mise en forme pour la même information. Le numéro et la phase viennent du
+// marqueur <fiche-entree> de la fiche visée (posé par fiche()) - retrouvé
+// par son id, pas recalculé.
 // Le lien reste tolérant si la fiche visée n'est pas dans CETTE
 // compilation (ex : aperçu allégé d'une seule fiche, voir
-// main-edition.typ) - un lien Typst vers un label absent est une erreur
-// fatale, pas juste un lien mort ; on vérifie d'abord son existence
-// (query) et on retombe sur du texte simple sinon.
+// main-edition.typ) - une fiche non trouvée retombe sur du texte simple,
+// sans numéro ni lien, plutôt qu'une erreur fatale (lien Typst vers un
+// label absent).
 #let fiches-liees(entrees) = if entrees.len() > 0 {
   block(above: espacement-paragraphe)[
     #text(weight: "bold", size: taille-bloc-titre, fill: couleur-bordure-entete)[FICHES LIÉES]
-    #for (id, titre) in entrees [
-      #context {
-        let cible = label("fiche-" + id)
-        let existe = query(cible).len() > 0
-        block(above: 0.2em, below: 0.2em)[
-          #if existe { link(cible)[#titre] } else { titre }
-        ]
+    #for (id, titre) in entrees {
+      context {
+        let cibles = query(<fiche-entree>).filter(e => e.value.id == id)
+        if cibles.len() > 0 {
+          let e = cibles.first()
+          let page = counter(page).at(e.location()).at(0)
+          ligne-sommaire-fiche(e.value, page)
+        } else {
+          block(above: 0.2em, below: 0.2em)[#titre]
+        }
       }
-    ]
+    }
   ]
 }
 
@@ -308,19 +344,6 @@
 // aucune liste de titres/phases à saisir ou tenir à jour séparément.
 // Réorganiser les fiches (changer l'ordre des #include dans le fichier
 // principal) change donc le sommaire automatiquement, sans autre action.
-#let ligne-sommaire-fiche(d, page) = {
-  let pastille = if d.phase != none {
-    box(fill: couleur-phase(d.phase), inset: (x: 3pt, y: 1pt), radius: 2pt)[
-      #text(size: 7pt, weight: "bold", fill: white)[#abrege-phase(d.phase)]
-    ]
-  } else { none }
-  block(above: 0.2em, below: 0.2em)[
-    #link(label("fiche-" + d.id))[
-      #pastille #h(4pt) #d.titre #h(1fr) #box(width: 1fr)[#repeat[.]] #h(4pt) #page
-    ]
-  ]
-}
-
 #let construire-sommaire() = context {
   let entrees = query(<fiche-entree>)
   for e in entrees {

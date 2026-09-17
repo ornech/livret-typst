@@ -16,6 +16,13 @@
 #let respiration = cfg.page.respiration_texte_bande_mm * 1mm
 #let marge-haut-bande = cfg.page.marge_haut_bande_mm * 1mm
 #let marge-bas-bande = cfg.page.marge_bas_bande_mm * 1mm
+// Espace ENTRE la règle de l'entête et la première ligne de contenu -
+// sans lui, le haut de la marge de contenu tombait exactement à la même
+// hauteur que le bas de l'entête (calque de fond), donc pile sur la
+// règle, sans aucune respiration (bug réel constaté sur le PDF rendu,
+// 2026-09-17). Indépendant de marge-haut-bande, qui reste la hauteur de
+// la ZONE de l'entête lui-même (texte + règle).
+#let respiration-entete = cfg.page.respiration_texte_entete_mm * 1mm
 
 #let contenu-hauteur = page-h - marge-haut - marge-bas
 #let hauteur-bande = contenu-hauteur - marge-haut-bande - marge-bas-bande

@@ -307,7 +307,7 @@
       // on le réutilise ici comme hauteur de l'entête plutôt que d'inventer
       // un réglage séparé (bug réel rencontré au 2e essai : titre et
       // entête superposés, l'un recouvrant l'autre).
-      top: marge-haut + marge-haut-bande, bottom: marge-bas,
+      top: marge-haut + marge-haut-bande + respiration-entete, bottom: marge-bas,
     ),
     binding: left,
     background: dessiner-fond(),

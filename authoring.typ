@@ -291,7 +291,7 @@
   // simple requête (query), dans l'ordre où elles apparaissent, sans liste
   // séparée à tenir à jour à la main : réorganiser = juste changer l'ordre
   // des #include dans le fichier principal, le sommaire suit tout seul.
-  [#metadata((id: id, titre: titre, phase: phase, valide-le: if valide { date_validation } else { none })) <fiche-entree>]
+  [#metadata((id: id, titre: titre, phase: phase, type: type, valide-le: if valide { date_validation } else { none })) <fiche-entree>]
   heading(level: 1)[#titre]
   v(0.3em)
   if not valide {
@@ -308,20 +308,49 @@
 // aucune liste de titres/phases à saisir ou tenir à jour séparément.
 // Réorganiser les fiches (changer l'ordre des #include dans le fichier
 // principal) change donc le sommaire automatiquement, sans autre action.
+#let ligne-sommaire-fiche(d, page) = {
+  let pastille = if d.phase != none {
+    box(fill: couleur-phase(d.phase), inset: (x: 3pt, y: 1pt), radius: 2pt)[
+      #text(size: 7pt, weight: "bold", fill: white)[#abrege-phase(d.phase)]
+    ]
+  } else { none }
+  block(above: 0.2em, below: 0.2em)[
+    #link(label("fiche-" + d.id))[
+      #pastille #h(4pt) #d.titre #h(1fr) #box(width: 1fr)[#repeat[.]] #h(4pt) #page
+    ]
+  ]
+}
+
 #let construire-sommaire() = context {
   let entrees = query(<fiche-entree>)
   for e in entrees {
     let d = e.value
     let page = counter(page).at(e.location()).at(0)
-    let pastille = if d.phase != none {
-      box(fill: couleur-phase(d.phase), inset: (x: 3pt, y: 1pt), radius: 2pt)[
-        #text(size: 7pt, weight: "bold", fill: white)[#abrege-phase(d.phase)]
-      ]
-    } else { none }
-    block(above: 0.2em, below: 0.2em)[
-      #link(label("fiche-" + d.id))[
-        #pastille #h(4pt) #d.titre #h(1fr) #box(width: 1fr)[#repeat[.]] #h(4pt) #page
-      ]
+    ligne-sommaire-fiche(d, page)
+  }
+}
+
+// --- second sommaire (retour utilisateur, 2026-09-17) : mêmes fiches,
+// mais regroupées par type de fiche (fiche_reflexe, fiche_role...) plutôt
+// que par phase chronologique - une classification transversale, utile
+// pour retrouver par exemple toutes les checklists sans connaître leur
+// phase. Ordre des groupes fixé par ordre-types (pas alphabétique, ni
+// l'ordre d'apparition dans le document) ; à l'intérieur d'un groupe, les
+// fiches restent dans leur ordre d'apparition (celui du manifeste).
+#let ordre-types = ("fiche_reflexe", "fiche_role", "fiche_communication", "checklist", "diagnostic")
+
+#let construire-sommaire-par-type() = context {
+  let entrees = query(<fiche-entree>)
+  for t in ordre-types {
+    let groupe = entrees.filter(e => e.value.type == t)
+    if groupe.len() == 0 { continue }
+    block(above: 0.8em, below: 0.3em)[
+      #text(weight: "bold", size: taille-bloc-titre, fill: couleur-bordure-entete)[#upper(type-labels.at(t, default: t))]
     ]
+    for e in groupe {
+      let d = e.value
+      let page = counter(page).at(e.location()).at(0)
+      ligne-sommaire-fiche(d, page)
+    }
   }
 }

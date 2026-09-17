@@ -9,7 +9,8 @@
     "largeur_bande_phase_mm": 16,
     "respiration_texte_bande_mm": 7,
     "marge_haut_bande_mm": 20,
-    "marge_bas_bande_mm": 12
+    "marge_bas_bande_mm": 12,
+    "respiration_texte_entete_mm": 5
   },
   "typographie": {
     "police_famille": "Arial, Helvetica, \"Liberation Sans\", sans-serif",

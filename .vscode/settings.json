@@ -1,4 +1,4 @@
 {
-  "tinymist.rootPath": ".",
+  "tinymist.rootPath": "/data/projets/livret-typst",
   "tinymist.formatterMode": "typstyle"
 }

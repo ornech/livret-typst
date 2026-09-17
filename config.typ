@@ -16,12 +16,25 @@
 #let respiration = cfg.page.respiration_texte_bande_mm * 1mm
 #let marge-haut-bande = cfg.page.marge_haut_bande_mm * 1mm
 #let marge-bas-bande = cfg.page.marge_bas_bande_mm * 1mm
+// Hauteur RÉELLE de la boîte d'entête (texte + espace + règle), calquée sur
+// le CSS d'origine (rendu_livret.ipynb : .entete, hauteur naturelle du
+// contenu - PAS un bloc étiré). Volontairement bien plus petite que
+// marge-haut-bande, qui elle reste "l'espace réservé avant que la bande de
+// phase ne démarre" (voir dessiner-fond, fiche.typ) - dans le rendu
+// d'origine, ces deux hauteurs sont déjà indépendantes : l'entête colle en
+// haut de page, la bande de phase démarre plus bas, à une position fixe qui
+// ne dépend pas de la hauteur réelle de l'entête. Un essai précédent
+// réutilisait par erreur marge-haut-bande comme hauteur de boîte d'entête
+// (bottom-align dans une boîte de 20mm) : la règle se retrouvait alors
+// collée au début de la bande, alors que l'original les laisse
+// nettement décalées (retour utilisateur, 2026-09-17, avec capture d'écran
+// du rendu WeasyPrint d'origine comme référence).
+#let hauteur-entete = cfg.page.hauteur_entete_mm * 1mm
 // Espace ENTRE la règle de l'entête et la première ligne de contenu -
-// sans lui, le haut de la marge de contenu tombait exactement à la même
-// hauteur que le bas de l'entête (calque de fond), donc pile sur la
-// règle, sans aucune respiration (bug réel constaté sur le PDF rendu,
-// 2026-09-17). Indépendant de marge-haut-bande, qui reste la hauteur de
-// la ZONE de l'entête lui-même (texte + règle).
+// agrandi à dessein (retour utilisateur, 2026-09-17, avec capture d'écran
+// à l'appui) au-delà de l'équivalent CSS d'origine (margin-bottom: 10px
+// ≈ 2.65mm) : l'espacement voulu ici est nettement plus généreux, pas une
+// reproduction pixel-perfect du pipeline WeasyPrint.
 #let respiration-entete = cfg.page.respiration_texte_entete_mm * 1mm
 
 #let contenu-hauteur = page-h - marge-haut - marge-bas

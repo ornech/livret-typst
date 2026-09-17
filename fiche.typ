@@ -222,20 +222,20 @@
     ])
   }
 
-  // entête bord-à-bord (bord de reliure -> bord intérieur de la bande) -
-  // soit l'entête d'une fiche (pictogramme+onglet / type+version), soit
-  // l'entête générique d'une page transversale (libellé / version) - voir
-  // rendre_entete_fiche vs rendre_entete_generique, rendu_livret.ipynb.
-  // Bug réel corrigé (2026-09-17, repéré sur "Rôles et documents de la
-  // cellule de crise" - onglet assez long pour rendre visible une largeur
-  // de boîte fausse que des noms courts masquaient jusqu'ici) : sur une
-  // page paire (verso), l'entête doit s'étendre du bord intérieur de la
-  // bande (marge-exterieure) jusqu'au bord physique droit (page-w), pas
-  // l'inverse - la formule reprenait par erreur celle de la BANDE, pas
-  // celle de l'ENTÊTE.
-  let hx0 = if impair { 0mm } else { marge-exterieure }
-  let hx1 = if impair { page-w - marge-exterieure } else { page-w }
-  place(dx: hx0, dy: marge-haut, box(width: hx1 - hx0, height: marge-haut-bande)[
+  // entête : strictement contenue entre les MÊMES bords que le corps de
+  // texte (marge-reliure côté reliure, marge-exterieure + respiration côté
+  // bande) - aucun débord, ni vers la bande de phase, ni vers le bord de
+  // reliure. Deux bugs réels corrigés successivement (2026-09-17, retour
+  // utilisateur avec capture d'écran à l'appui à chaque fois) : la formule
+  // arrêtait d'abord l'entête à marge-exterieure (flush avec la bande,
+  // corrigé une 1re fois en la ramenant à marge-exterieure + respiration),
+  // mais laissait encore le côté reliure déborder jusqu'au bord physique
+  // (0mm / page-w) - un reliquat du "bleed volontaire" du CSS d'origine,
+  // que l'utilisateur ne veut PAS reproduire ici : l'entête doit rester
+  // dans les mêmes marges que le contenu, sur les deux côtés.
+  let hx0 = if impair { marge-reliure } else { marge-exterieure + respiration }
+  let hx1 = if impair { page-w - marge-exterieure - respiration } else { page-w - marge-reliure }
+  place(dx: hx0, dy: marge-haut, box(width: hx1 - hx0, height: hauteur-entete)[
     #align(bottom)[
       #set text(size: taille-entete-onglet)
       #grid(columns: (1fr, auto), align: (left + horizon, right + horizon))[
@@ -302,12 +302,13 @@
       // le calque de fond (background) et ne participe donc pas au flux
       // normal - contrairement au HTML, où .entete était un vrai premier
       // enfant de .page et poussait le reste du contenu vers le bas tout
-      // seul. marge_haut_bande_mm est déjà, dans le schéma existant,
-      // l'espace réservé pour l'entête avant que la bande ne commence :
-      // on le réutilise ici comme hauteur de l'entête plutôt que d'inventer
-      // un réglage séparé (bug réel rencontré au 2e essai : titre et
-      // entête superposés, l'un recouvrant l'autre).
-      top: marge-haut + marge-haut-bande + respiration-entete, bottom: marge-bas,
+      // seul. On rejoue ici la même hauteur que dans l'original (hauteur-
+      // entete, PAS marge-haut-bande - voir config.typ et dessiner-fond) +
+      // le même espacement (respiration-entete, ~10px CSS d'origine) avant
+      // que le corps ne commence. La bande de phase, elle, démarre plus
+      // bas (marge-haut-bande) : le corps peut donc commencer AVANT que la
+      // bande n'apparaisse à côté de lui, exactement comme dans l'original.
+      top: marge-haut + hauteur-entete + respiration-entete, bottom: marge-bas,
     ),
     binding: left,
     background: dessiner-fond(),

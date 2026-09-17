@@ -1,0 +1,93 @@
+{
+  "page": {
+    "format_page": "A4",
+    "page_hauteur_mm": 297,
+    "marge_haut_mm": 20,
+    "marge_bas_mm": 20,
+    "marge_reliure_mm": 30,
+    "marge_exterieure_mm": 18,
+    "largeur_bande_phase_mm": 16,
+    "respiration_texte_bande_mm": 7,
+    "marge_haut_bande_mm": 20,
+    "marge_bas_bande_mm": 12
+  },
+  "typographie": {
+    "police_famille": "Arial, Helvetica, \"Liberation Sans\", sans-serif",
+    "interligne": 1.2,
+    "taille_corps_pt": 11.0,
+    "taille_titre_fiche_pt": 15.0,
+    "taille_titre_chapitre_pt": 16.0,
+    "taille_sommaire_titre_pt": 11.0,
+    "taille_entete_onglet_pt": 10.0,
+    "taille_meta_pt": 8.5,
+    "taille_bloc_titre_pt": 12.0,
+    "taille_validation_pt": 9.0,
+    "taille_source_pt": 9.0,
+    "taille_tab_phase_pt": 12.5,
+    "espacement_blocs_pt": 20.0,
+    "espacement_encart_pt": 4.0,
+    "espacement_paragraphe_pt": 10.0
+  },
+  "couleurs": {
+    "couleur_texte": "#111111",
+    "couleur_fond": "#ffffff",
+    "couleur_texte_attenue": "#666666",
+    "couleur_bordure_entete": "#333333",
+    "couleur_tab_inactif_fond": "#e8e8e8",
+    "couleur_tab_inactif_texte": "#888888",
+    "couleur_encart_danger_fond": "#111111",
+    "couleur_encart_danger_texte": "#ffffff",
+    "couleur_encart_note_fond": "#e0f2fe",
+    "couleur_encart_note_texte": "#002d57",
+    "couleur_encart_attention_fond": "#ffcc00",
+    "couleur_encart_attention_texte": "#000000"
+  },
+  "phases": [
+    {
+      "slug": "preparation",
+      "label": "Préparation",
+      "abrege": "PRÉPARATION",
+      "groupe": "Avant crise"
+    },
+    {
+      "slug": "qualification",
+      "label": "Qualification",
+      "abrege": "QUALIFICATION",
+      "groupe": "Crise"
+    },
+    {
+      "slug": "endiguement",
+      "label": "Endiguement",
+      "abrege": "ENDIGUEMENT",
+      "groupe": "Crise"
+    },
+    {
+      "slug": "investigation",
+      "label": "Investigation",
+      "abrege": "INVESTIGATION",
+      "groupe": "Crise"
+    },
+    {
+      "slug": "remediation",
+      "label": "Remédiation",
+      "abrege": "REMÉDIATION",
+      "groupe": "Crise"
+    },
+    {
+      "slug": "retex",
+      "label": "RETEX",
+      "abrege": "RETEX",
+      "groupe": "Après crise"
+    }
+  ],
+  "groupes_couleurs": {
+    "Avant crise": "#64748b",
+    "Crise": "#dc2626",
+    "Après crise": "#059669"
+  },
+  "icones_encart": {
+    "note": "📝",
+    "attention": "📢",
+    "avertissement": "⚠"
+  }
+}

@@ -64,12 +64,6 @@
       "groupe": "Crise"
     },
     {
-      "slug": "investigation",
-      "label": "Investigation",
-      "abrege": "INVESTIGATION",
-      "groupe": "Crise"
-    },
-    {
       "slug": "remediation",
       "label": "Remédiation",
       "abrege": "REMÉDIATION",

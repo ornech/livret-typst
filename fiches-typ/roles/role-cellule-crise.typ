@@ -6,8 +6,6 @@
   phase: "preparation",
   onglet: (titre: "Rôles et documents de la cellule de crise", pictogramme: "cercle"),
   titre: "Rôles de la cellule de crise",
-  date_validation: "2026-09-09",
-  validateur: "Jean-François Ornech",
 )[
   == Coordinateur / décideur
   ```texte

@@ -100,6 +100,13 @@
   slug
 }
 
+#let libelle-phase(slug) = {
+  for p in phases {
+    if p.slug == slug { return p.label }
+  }
+  slug
+}
+
 #let groupe-phase(slug) = {
   for p in phases {
     if p.slug == slug { return p.groupe }

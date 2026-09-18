@@ -1,1 +1,5 @@
 out/
+# Régénéré à chaque build par build.sh depuis l'historique git (voir
+# authoring.typ, dates-fiches) - jamais à committer, jamais à éditer à la
+# main.
+data/dates-fiches.json

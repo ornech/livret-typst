@@ -6,8 +6,6 @@
   phase: "qualification",
   onglet: (titre: "Fiches réflexes", pictogramme: "losange"),
   titre: "Fuite de données",
-  date_validation: "2026-09-07",
-  validateur: "Jean-François Ornech",
 )[
   == Déclencheur
   ```texte

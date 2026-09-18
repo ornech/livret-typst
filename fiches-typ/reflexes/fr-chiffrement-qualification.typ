@@ -7,7 +7,6 @@
   onglet: (titre: "Fiches réflexes", pictogramme: "losange"),
   titre: "Chiffrement ou effacement en cours - Qualification",
 )[
-  == Déclencheur
   ```texte
   Un logiciel malveillant de chiffrement ou d'effacement (ex : rançongiciel) est détecté ou suspecté sur le système d'information. Répondre vite avec des réponses approximatives plutôt que chercher l'exhaustivité - fixer un temps contraint (30 minutes à 1 heure) ; une qualification plus fine se fera ensuite, avec l'appui d'une équipe spécialisée si besoin.
   ```
@@ -51,7 +50,10 @@
   Au final : l'incident de type rançongiciel est-il confirmé, circonscrit ou étendu, à impact fort, urgent à résoudre ? Quel est le niveau de gravité - anomalie courante, incident mineur, incident majeur, ou crise cyber ?
   ```
 
-  #fiches-liees((("fr-chiffrement-endiguement", "Chiffrement ou effacement en cours - Endiguement"), ("grille-criticite", "Grille de criticité - évaluer la gravité d'un incident"),))
+  #fiches-liees((
+    ("fr-chiffrement-endiguement", "Chiffrement ou effacement en cours - Endiguement"),
+    ("grille-criticite", "Grille de criticité - évaluer la gravité d'un incident"),
+  ))
 
   #source("intercert-france-2026-fiche-reflexe-chif-2", page: "p. 2-10")
   #imprimer-sources()

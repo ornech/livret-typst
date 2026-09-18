@@ -175,6 +175,19 @@
   ]
 }
 
+// --- Pied de fiche (FICHES LIÉES + SOURCES) : les deux ne s'affichent plus
+// à la suite normale du texte, dans le flux de la fiche - retour
+// utilisateur, 2026-09-17, ils doivent se retrouver ensemble, en bas de la
+// DERNIÈRE page physique de la fiche, dans une police plus petite et en
+// italique (registre "note de bas de page", visuellement détaché du corps).
+// fiches-liees() et imprimer-sources() ne dessinent donc plus rien
+// directement à l'endroit où elles sont appelées : elles empilent leur
+// contenu déjà mis en forme dans cet état, et fiche() (plus bas) le relit
+// UNE FOIS après tout `corps`, pousse le tout vers le bas de page avec
+// v(1fr) et applique la police réduite + italique - peu importe l'ordre où
+// l'auteur de la fiche appelle les deux fonctions.
+#let pied-fiche = state("pied-fiche", ())
+
 // --- Fiches liées (items[].fiches_liees côté JSON) : renvois croisés en
 // fin de fiche. Le titre de la fiche visée est résolu et écrit UNE FOIS,
 // au moment de la conversion depuis le JSON (voir convert_corpus.py) -
@@ -193,7 +206,7 @@
 // sans numéro ni lien, plutôt qu'une erreur fatale (lien Typst vers un
 // label absent).
 #let fiches-liees(entrees) = if entrees.len() > 0 {
-  block(above: espacement-paragraphe)[
+  pied-fiche.update(l => l + (block(above: espacement-paragraphe)[
     #text(weight: "bold", size: taille-bloc-titre, fill: couleur-bordure-entete)[FICHES LIÉES]
     #for (id, titre) in entrees {
       context {
@@ -207,7 +220,7 @@
         }
       }
     }
-  ]
+  ],))
 }
 
 // --- Essai (abandonné) de syntaxe façon GitHub (`> [!WARNING] ...`), à la
@@ -248,6 +261,14 @@
 // direct de l'éditeur).
 #let sources-data = json("data/sources.json")
 
+// Date de validation d'une fiche (voir fiche() plus bas) : générée par
+// build.sh à partir du dernier commit git touchant chaque fichier
+// fiches-typ/<onglet>/<id>.typ - PAS saisie à la main. Typst n'a aucun
+// accès à l'historique git ou aux métadonnées du système de fichiers
+// (sandbox volontaire du langage), d'où ce fichier intermédiaire régénéré
+// à chaque compilation (voir data/dates-fiches.json, .gitignore).
+#let dates-fiches = json("data/dates-fiches.json")
+
 #let formater-reference-apa(cle) = md-inline(sources-data.at(cle))
 
 #let sources-citees = state("sources-citees", ())
@@ -258,7 +279,7 @@
 
 #let imprimer-sources() = context {
   let liste = sources-citees.get()
-  if liste.len() == 0 {
+  let bloc = if liste.len() == 0 {
     block(above: espacement-blocs)[
       #block(fill: couleur-encart-attention-fond, inset: (x: 6pt, y: 3pt))[
         #text(fill: couleur-encart-attention-texte, weight: "bold")[⚠ Aucune référence source renseignée pour cette fiche]
@@ -285,6 +306,7 @@
       ]
     ]
   }
+  pied-fiche.update(l => l + (bloc,))
 }
 
 // Libellés affichés pour chaque type de fiche (format.json, enum type) -
@@ -299,27 +321,77 @@
   diagnostic: "Diagnostic",
 )
 
+// Dernière phase pour laquelle un repère a déjà été inséré dans le plan/
+// index du PDF (voir plus bas, fiche()) - permet de n'insérer ce repère
+// qu'UNE FOIS par phase, à sa première apparition, plutôt qu'à chaque
+// fiche (retour utilisateur, 2026-09-17 : l'index doit classer les fiches
+// PAR PHASE, un niveau de plus que le simple "fiche -> ses groupes"
+// existant). Repose sur le fait que le manifeste (data/manifeste.json)
+// liste déjà les fiches groupées par phase chronologique (voir main.typ) -
+// un repère par CHANGEMENT de phase suffit, pas de tri à refaire ici.
+#let etat-derniere-phase-affichee = state("derniere-phase-affichee", none)
+
 // --- enveloppe d'une fiche : pose l'état (bande/entête/pied) puis le titre
 // + l'avertissement "non validée" éventuel, exactement comme rendre-fiche
 // dans fiche.typ mais pour un contenu écrit à la main plutôt que généré
 // depuis un tableau JSON.
-#let fiche(id: none, type: "fiche_reflexe", phase: none, onglet: none, titre: none, date_validation: none, validateur: none, corps) = {
-  let valide = date_validation != none and validateur != none
+// Validation (retour utilisateur, 2026-09-17) : plus de date_validation
+// saisie à la main - une fiche est validée dès que `validateur` est
+// renseigné, la date affichée vient automatiquement de dates-fiches (voir
+// plus haut, alimentée par build.sh depuis git). Pour repasser une fiche
+// en "non validé", il suffit de retirer son paramètre `validateur:` -
+// aucun champ séparé à effacer/re-remplir en plus.
+#let fiche(id: none, type: "fiche_reflexe", phase: none, onglet: none, titre: none, validateur: none, corps) = {
+  let valide = validateur != none
+  let date-validation = dates-fiches.at(id, default: none)
   etat-phase.update(phase)
   etat-onglet.update(onglet)
   etat-type.update(type-labels.at(type, default: type))
-  etat-validation-pied.update(if valide { "Validé le " + date_validation } else { "" })
+  etat-validation-pied.update(if valide { "Validé le " + date-validation } else { "" })
+  // sources-citees est un state() GLOBAL (un seul par document, pas un par
+  // fiche) - sans ce reset, imprimer-sources() (appelée en fin de CETTE
+  // fiche) lit la liste cumulée depuis la fiche 1, pas seulement les
+  // #source() de cette fiche : bug réel constaté sur le PDF rendu (retour
+  // utilisateur, 2026-09-17) - le nombre de sources affichées croissait
+  // fiche après fiche (jusqu'à 32 sur une seule fiche, alors que le corpus
+  // entier ne compte que 55 citations au total) au lieu de rester propre à
+  // chaque fiche.
+  sources-citees.update(())
+  // Même état GLOBAL, même besoin de reset à chaque fiche - voir pied-fiche
+  // ci-dessus (authoring.typ) : FICHES LIÉES et SOURCES s'y empilent au fil
+  // de `corps`, puis sont relues et affichées ensemble, en bas de page,
+  // juste après `corps` (voir plus bas).
+  pied-fiche.update(())
   pagebreak(weak: true)
 
-  // Titre de fiche (niveau 1) et titres de groupe (niveau 2) restent des
-  // headings Typst réels - pour l'apparence imprimée (voir show ci-dessous)
-  // ET pour le plan de navigation VS Code (voir groupe() plus haut).
-  set heading(numbering: none)
-  show heading.where(level: 1): it => text(size: taille-titre-fiche, weight: "bold")[#it.body]
-  show heading.where(level: 2): it => block(above: 0.5em, below: 0.1em)[
+  // Titre de fiche (niveau 2) et titres de groupe (niveau 3, via offset -
+  // voir plus bas) restent des headings Typst réels - pour l'apparence
+  // imprimée (voir show ci-dessous) ET pour le plan de navigation VS Code
+  // (voir groupe() plus haut) ET pour l'index/signets du PDF (voir repère
+  // de phase ci-dessous, niveau 1 - un rang plus haut que le titre de
+  // fiche, pour que l'index classe les fiches PAR PHASE). offset: 1
+  // décale UNIQUEMENT les headings écrits en syntaxe `==` (donc les
+  // groupes) - PAS les appels heading(level: ...) explicites ci-dessous
+  // (titre, repère de phase), qui restent à leur niveau littéral : need de
+  // relire tous les fichiers fiches-typ/ pour ce changement.
+  set heading(numbering: none, offset: 1)
+  show heading.where(level: 1): it => []
+  show heading.where(level: 2): it => text(size: taille-titre-fiche, weight: "bold")[#it.body]
+  show heading.where(level: 3): it => block(above: 0.5em, below: 0.1em)[
     #text(weight: "bold", size: taille-bloc-titre, fill: couleur-bordure-entete)[#it.body]
   ]
   show raw.where(block: true): show-raw-fiche
+
+  // Repère de phase (niveau 1, invisible - show heading.where(level:1) ci-
+  // dessus le réduit à rien à l'impression) : n'apparaît QUE dans le plan/
+  // index du PDF, comme parent de toutes les fiches de cette phase, tant
+  // que la phase ne change pas.
+  context {
+    if phase != none and etat-derniere-phase-affichee.get() != phase {
+      heading(level: 1)[#libelle-phase(phase)]
+    }
+  }
+  etat-derniere-phase-affichee.update(phase)
 
   box(width: 0pt, height: 0pt)[#metadata(none)#label("fiche-" + id)]
   // Marqueur partagé (même label sur toutes les fiches) - permet à
@@ -327,16 +399,45 @@
   // simple requête (query), dans l'ordre où elles apparaissent, sans liste
   // séparée à tenir à jour à la main : réorganiser = juste changer l'ordre
   // des #include dans le fichier principal, le sommaire suit tout seul.
-  [#metadata((id: id, titre: titre, phase: phase, type: type, valide-le: if valide { date_validation } else { none })) <fiche-entree>]
-  heading(level: 1)[#titre]
+  [#metadata((id: id, titre: titre, phase: phase, type: type, valide-le: if valide { date-validation } else { none })) <fiche-entree>]
+  heading(level: 2)[#titre]
   v(0.3em)
   if not valide {
     block(fill: couleur-encart-danger-fond, inset: (x: 6pt, y: 3pt))[
-      #text(fill: couleur-encart-danger-texte, weight: "bold", size: taille-validation)[⚠ Non validé — date et validateur manquants]
+      #text(fill: couleur-encart-danger-texte, weight: "bold", size: taille-validation)[⚠ Non validé — relecture non effectuée]
     ]
   }
   v(0.4em)
   corps
+
+  // FICHES LIÉES + SOURCES, ensemble, poussées en bas de la DERNIÈRE page
+  // physique de la fiche (v(1fr) consomme l'espace restant sur cette
+  // page), dans une police réduite et en italique - registre "note de bas
+  // de page", détaché visuellement du corps plutôt qu'une simple suite du
+  // texte (retour utilisateur, 2026-09-17). Les styles explicites posés
+  // plus haut dans ces blocs (ex : text(style: "normal", ...) des badges
+  // "Non vérifiée") restent prioritaires sur cet ambiant italique - seul le
+  // texte qui n'impose pas déjà son propre style en hérite.
+  context {
+    let items = pied-fiche.get()
+    if items.len() > 0 {
+      // place(bottom, float: true) plutôt que v(1fr) (essai précédent) :
+      // v(1fr) ne pousse le bloc en bas que s'il tient ENTIÈREMENT dans
+      // l'espace restant de la page courante - sinon Typst le fait
+      // déborder sur une page neuve, mais démarré en HAUT de cette
+      // nouvelle page (pas en bas) : bug réel constaté sur le PDF rendu
+      // (une fiche assez longue laissait alors SOURCES seule, orpheline en
+      // haut d'une page quasi vide, alors que FICHES LIÉES restait en bas
+      // de la page précédente). Un flottant "bottom" se reporte lui aussi
+      // sur la page suivante si besoin, mais reste ancré à SON bas -
+      // exactement le comportement voulu, quelle que soit la longueur du
+      // corps de la fiche.
+      place(bottom, float: true, block(width: 100%)[
+        #set text(size: 0.85 * taille-corps, style: "italic")
+        #for it in items { it }
+      ])
+    }
+  }
 }
 
 // Sommaire ENTIÈREMENT dérivé de l'ordre d'apparition des fiches dans le

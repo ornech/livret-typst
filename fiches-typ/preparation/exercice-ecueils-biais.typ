@@ -6,8 +6,6 @@
   phase: "preparation",
   onglet: (titre: "Préparation", pictogramme: "triangle"),
   titre: "Exercice - Écueils et biais",
-  date_validation: "2026-09-09",
-  validateur: "Jean-François Ornech",
 )[
   == Écueils fréquents
   ```texte

@@ -75,12 +75,12 @@ La cellule agit sur mandat propre jusqu'à ces seuils ; au-delà, le Coordinateu
 
 ## V. Rythme de crise et rendu de compte
 
-**SITREP** (*situation report*) : point de situation périodique transmis en cellule, oral ou écrit. Terme standard de gestion de crise (utilisé notamment par l'ANSSI), pas un acronyme maison — non soumis au test de collision (§VIII).
+**SITREP** (*situation report*) : compte rendu de situation périodique, transmis en cellule selon la formule « Rendre compte de [fait] à [autorité] par [moyen] » (charte §II.E). Terme standard de la doctrine militaire française (OTAN : compte rendu de situation), pas un acronyme maison — non soumis au test de collision (§VIII).
 
 | # | Règle | Application |
 |---|---|---|
-| 1 | Cadence de SITREP fixée dès l'activation | Ex. : 2 à 4h en phase aiguë, glissant en phase de stabilisation. |
-| 2 | Cadence indexée sur un niveau de gravité déclaré, jamais improvisée | Mineure / majeure / catastrophique — le choix H+15 vs H+2 découle du niveau déclaré, pas d'un ressenti. |
+| 1 | Cadence des points de situation fixée dès l'activation | Ex. : 2 à 4h en phase aiguë, glissant en phase de stabilisation. Un SITREP est produit à l'issue de chaque point de situation (§V, règle 3). |
+| 2 | Cadence des points de situation indexée sur un niveau de gravité déclaré, jamais improvisée | Mineure / majeure / catastrophique — le choix H+15 vs H+2 découle du niveau déclaré, pas d'un ressenti. |
 | 3 | Rendu de compte ascendant vers la Direction générale (ou cellule décisionnelle en profil B) | Fréquence fixée en amont, et systématiquement dès franchissement d'un seuil d'escalade (§IV). |
 
 ---
@@ -186,7 +186,7 @@ Toute fiche mentionnant un rôle, une validation ou un rendu de compte doit êtr
 
 | Document | Usage pour ce cadrage |
 |---|---|
-| ANSSI, *Crise d'origine cyber* (déc. 2021, MAJ mars 2023) | Architecture à deux cellules, rythme de SITREP, phases de crise, registre opérationnel |
+| ANSSI, *Crise d'origine cyber* (déc. 2021, MAJ mars 2023) | Architecture à deux cellules, rythme des points de situation, phases de crise, registre opérationnel |
 | ANSSI, *Mes premiers réflexes cyber* | Modèle à cellule unique, rôles en structure de taille réduite |
 | RETEX hospitaliers français (Dax 2021, Corbeil-Essonnes 2022, Villefranche-sur-Saône, Arles, Cannes 2024, Pontarlier) | Continuité en mode dégradé, main courante papier, ouverture à des acteurs externes |
 | Weick & Sutcliffe, *Managing the Unexpected* (High Reliability Organizations) | Principes de vigilance opérationnelle |

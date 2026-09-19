@@ -66,6 +66,9 @@
 | « Rendre compte de [fait] à [autorité] par [moyen]. » | « Rendre compte de l'incident au CISO par téléphone. » |
 | « SITREP n°X à H+Y. » | « SITREP n°3 à H+90. » |
 | « Alimenter [document]. » | « Alimenter la main courante en temps réel. » |
+| « Voir Annexe X » / « Cf. fiche n°X ». | Renvoi vers du contenu-référence, jamais vers une action. |
+
+> « Voir Annexe X » / « Cf. fiche n°X » suppose que le contenu référencé existe dans un bloc typographiquement distinct du corps actionnable de la fiche (encart, section repérable, mise en forme différente) — jamais mêlé en paragraphe ordinaire au reste du contenu. Si aucun mécanisme de ce type n'existe dans le gabarit utilisé, c'est un blocage à signaler (cf. CLAUDE.md), pas une raison d'écrire le contenu de référence en prose continue dans le corps de la fiche.
 
 ### F. Termes mnémotechniques
 
@@ -124,6 +127,8 @@ Le conditionnel grammatical reste interdit (règle 2). L'incertitude, réalité 
 
 ## V. Canevas de fiche opérationnelle
 
+Chaque bloc de ce canevas (en-tête OBJET/DÉCLENCHEUR/ACTEUR/DÉLAI, sections 1 à 6, pied de traçabilité) est un élément structurel distinct et vérifiable dans le document produit — jamais un paragraphe qui l'évoque en langage naturel. Une fiche où ces blocs ne sont pas des éléments séparables et repérables visuellement n'est pas conforme, même si chaque phrase individuelle respecte les règles du §I. Si le gabarit de production ne permet pas nativement cette séparation, c'est un blocage à signaler (cf. CLAUDE.md), jamais une raison de revenir à la prose continue.
+
 ```
 FICHE n°[X] – [INTITULE EN NOMINAL]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -164,11 +169,13 @@ VALIDATEUR   : [nom / rôle]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+> `ACTEUR` porte le rôle Décideur/Exécutant au sens de la matrice D/C/I/E (cadrage §III). Les rôles Consulté et Informé sont reportés respectivement en section 3 (Action, comme étape « Consulter [rôle] ») et section 5 (Rendu de compte) — jamais empilés dans le champ `ACTEUR` lui-même.
+
 ---
 
 ## VI. Contrôle qualité (Annexe A)
 
-Chaque fiche est validée par la check-list ci-dessous **avant diffusion** :
+Chaque fiche est validée par la check-list ci-dessous **avant diffusion**, sur le document produit (rendu final), pas sur le fichier source :
 
 | # | Vérification | ☐ |
 |---|---|---|
@@ -180,8 +187,9 @@ Chaque fiche est validée par la check-list ci-dessous **avant diffusion** :
 | 6 | Formule d'absence utilisée si vide (RAS / Inchangé / NA), horodatée, et RAS interprété au sens du §III ? | ☐ |
 | 7 | Toute incertitude marquée explicitement (§II.G), aucune implicite ? | ☐ |
 | 8 | Bloc de traçabilité complet (rédacteur, date, version, validateur) ? | ☐ |
+| 9 | En-tête OBJET/DÉCLENCHEUR/ACTEUR/DÉLAI et sections 1 à 6 visuellement séparés, pas de paragraphe continu ? | ☐ |
 
-> Un script (regex sur les mots interdits : « rapidement », « devrait », « conviendrait », « faudrait », « pourrait », « serait », « aurait », « semblerait », « dans les meilleurs délais », « il est recommandé de », « il convient de ») peut automatiser les points 2, 3 et 4 avant validation humaine.
+> Un script (regex sur les mots interdits : « rapidement », « devrait », « conviendrait », « faudrait », « pourrait », « serait », « aurait », « semblerait », « dans les meilleurs délais », « il est recommandé de », « il convient de ») peut automatiser les points 2, 3 et 4 avant validation humaine. Les points 1 et 9 ne peuvent être vérifiés que sur le rendu final, jamais sur le texte source seul.
 
 ---
 

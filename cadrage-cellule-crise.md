@@ -176,6 +176,7 @@ Ce document définit les autorités et les flux que la [charte de rédaction](ch
 - « Sur ordre de [autorité] » (charte §II.C) : l'autorité habilitée à donner cet ordre est déterminée par la matrice §III.
 - « Si [fait confirmé] → [obligation] » (charte §II.G, cas réglementaire) : le déclencheur d'obligation renvoie aux seuils d'escalade §IV et à la chaîne de validation §VIII.
 - Les acronymes maison définis en charte §II.F (CIR, CRP) sont soumis à la restriction d'usage du §VIII, règle 5 : jamais dans une fiche ou un message destiné à un acteur externe.
+- Le champ `ACTEUR` du canevas §V de la charte suit la matrice D/C/I/E du §III ci-dessus : voir charte §V pour la convention de report des rôles Consulté et Informé.
 
 Toute fiche mentionnant un rôle, une validation ou un rendu de compte doit être cohérente avec les autorités définies ici.
 

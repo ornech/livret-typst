@@ -92,7 +92,7 @@
   Identifie si des obligations contractuelles (clients, partenaires, fournisseurs) risquent de ne pas être respectées et propose une adaptation du plan de continuité d'activité.
   ```
 
-  #source("claude-md-roles-et-documents-de-la-cellu", page: "n/a - document interne du projet, non paginé")
+  #source("cadrage-cellule-crise-2026-gouvernan", page: "n/a - document interne du projet, non paginé")
   #source("anssi-2026-reflexes-cyber-mes-premiers-r", page: "p. 3-9 (pages « Agir en tant que responsable [rôle] »)")
   #imprimer-sources()
 ]

@@ -54,6 +54,40 @@
   ]
 }
 
+// Case à cocher dessinée (pas un glyphe Unicode ☐, dont l'alignement
+// vertical dépend de la police) - fonction séparée de action(), pas une
+// modification de action() elle-même : action()/```obligatoire``` etc.
+// gardent leur icône de priorité (●/◐/○), déjà utilisée par les fiches
+// existantes du corpus (ex. "Rassembler et préserver les preuves") - les
+// remplacer aurait fait perdre le codage de priorité sur tout le corpus
+// déjà écrit, silencieusement, pour un besoin propre aux fiches de type
+// checklist/canevas opérationnel (cases à cocher au stylo, cf. cadrage
+// §IX).
+#let taille-case = 0.85em
+#let dessiner-case = box(
+  width: taille-case, height: taille-case,
+  stroke: 0.7pt + couleur-texte,
+  radius: 1pt,
+  baseline: 15%, // ajuster visuellement si besoin, recale la case sur la ligne de base du texte
+)
+
+// Grille à colonnes fixes (case, taquet, texte) : le texte démarre toujours
+// à la même position horizontale, quelle que soit la longueur d'un
+// [RESPONSABLE] éventuel - contrairement à une case suivie d'un espace
+// simple, qui décale le texte selon la longueur du préfixe.
+#let action-case(responsable: none, justification: none, corps) = block(above: espacement-paragraphe, below: espacement-paragraphe)[
+  #grid(
+    columns: (taille-case, 6pt, 1fr),
+    align: (horizon, horizon, top),
+    dessiner-case, [],
+    [
+      #if responsable != none [#text(weight: "bold")[[#upper(responsable)]] #h(2pt)]
+      #corps
+      #if justification != none { ligne-justification(justification) }
+    ]
+  )
+]
+
 #let encart(style, justification: none, corps) = {
   let (fond, txt) = if style == "note" {
     (couleur-encart-note-fond, couleur-encart-note-texte)
@@ -141,6 +175,10 @@
   } else if it.lang in encarts-valides {
     let coupe = separer-justification(it.text)
     encart(it.lang, justification: coupe.justification, md-inline(coupe.principal))
+  } else if it.lang == "case" {
+    let extrait = extraire-role(it.text)
+    let coupe = separer-justification(extrait.reste)
+    action-case(responsable: extrait.role, justification: coupe.justification, md-inline(coupe.principal))
   } else if it.lang == "texte" {
     let coupe = separer-justification(it.text)
     rendre-texte-brut(coupe.principal, coupe.justification)
@@ -374,6 +412,18 @@
   // groupes) - PAS les appels heading(level: ...) explicites ci-dessous
   // (titre, repère de phase), qui restent à leur niveau littéral : need de
   // relire tous les fichiers fiches-typ/ pour ce changement.
+  // Un seul rythme vertical pour tout le contenu de la fiche qui n'est PAS
+  // déjà géré par action()/encart()/rendre-texte-brut() (qui posent leurs
+  // propres above/below explicites, prioritaires sur ce set ambiant) -
+  // ferme le troisième cas resté sans réglage : paragraphes/listes Typst
+  // natifs écrits directement dans `corps`, hors des blocs ``` de l'API
+  // courte. Pas de marker: [] ici - garder la puce par défaut de list(),
+  // sous peine de la faire disparaître silencieusement sur toutes les
+  // fiches du projet qui écrivent des listes natives.
+  set par(leading: 0.65em, spacing: espacement-paragraphe)
+  set block(spacing: espacement-paragraphe)
+  set list(spacing: espacement-paragraphe, indent: 1em)
+  set enum(spacing: espacement-paragraphe, indent: 1em)
   set heading(numbering: none, offset: 1)
   show heading.where(level: 1): it => []
   show heading.where(level: 2): it => text(size: taille-titre-fiche, weight: "bold")[#it.body]

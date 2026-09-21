@@ -1,7 +1,9 @@
 [
-  "fiches-typ/roles/role-cellule-crise.typ",
-  "fiches-typ/preparation/exercice-ecueils-biais.typ",
+  "fiches-typ/preparation/cellule-de-crise-principe.typ",
+  "fiches-typ/roles/cellule-de-crise-role.typ",
+  "fiches-typ/preparation/continuite-mode-degrade.typ",
   "fiches-typ/preparation/exercice-organiser.typ",
+  "fiches-typ/preparation/exercice-ecueils-biais.typ",
   "fiches-typ/preparation/documents-preparation.typ",
   "fiches-typ/preparation/main-courante-etat-situation.typ",
   "fiches-typ/communication/comm-entrainer-equipes.typ",

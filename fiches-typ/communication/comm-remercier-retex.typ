@@ -19,7 +19,7 @@
 
   == Réaliser le RETEX
   ```texte
-  Organiser un retour d'expérience "à chaud" (entretiens, ateliers de collecte de l'information) puis "à froid" (synthèse des observations, recommandations, plan d'action) - après la clôture de la crise, traité comme une action de capitalisation, jamais comme un audit.
+  Organiser un retour d'expérience "à chaud" (entretiens, ateliers de collecte de l'information) puis "à froid" (synthèse des observations, recommandations, plan d'action) - après la clôture de la crise (finalité du RETEX : voir Avant-propos, §4).
   ```
 
   #fiches-liees((("comm-partager-sensibiliser", "Partager son expérience et sensibiliser ses collaborateurs"),))

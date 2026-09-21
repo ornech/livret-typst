@@ -9,7 +9,7 @@
 )[
   == Objectif
   ```texte
-  À froid, en préparation : organiser régulièrement un exercice de simulation de crise cyber est la seule façon de transformer la connaissance de ce livret en réflexes (voir Philosophie). Un exercice sur table (2 à 3 heures, environ 6 semaines de préparation) convient pour une première sensibilisation ; une simulation complète (demi-journée à 2 jours, 2 à 6 mois de préparation) permet d'entraîner réellement le dispositif, y compris en mode dégradé.
+  À froid, en préparation : organiser régulièrement un exercice de simulation de crise cyber (voir Avant-propos, §1). Un exercice sur table (2 à 3 heures, environ 6 semaines de préparation) convient pour une première sensibilisation ; une simulation complète (demi-journée à 2 jours, 2 à 6 mois de préparation) permet d'entraîner réellement le dispositif, y compris en mode dégradé.
   ```
 
   == Constituer un groupe projet

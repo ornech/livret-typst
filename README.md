@@ -61,6 +61,8 @@ data/sources.json  Bibliographie dédupliquée (clé -> texte APA déjà format�
 data/manifeste.json Ordre des fiches dans le PDF final (généré, ne pas éditer à la main)
 fiches-typ/<onglet>/<id>.typ   Les 48 fiches, une par fichier
 main.typ           Point d'entrée : PDF complet
+avant-propos.typ   Avant-propos (registre narratif, charte §0) - inclus par main.typ avant le Sommaire ;
+                    sections numérotées en dur, citées par les fiches (« Voir Avant-propos, §X »)
 main-edition.typ   Point d'entrée : aperçu léger d'une seule fiche
 convert_corpus.py  Régénère fiches-typ/ + data/ depuis le JSON du dépôt principal
 ```

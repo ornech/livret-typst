@@ -6,6 +6,7 @@
 #import "couverture.typ": couverture
 #import "glossaire.typ": glossaire
 #import "bibliographie.typ": bibliographie
+#import "avant-propos.typ": avant-propos
 
 // Titre d'une page transversale (Sommaire, Glossaire, Bibliographie...) :
 // un vrai heading de niveau 1 (pas juste du texte stylé), pour apparaître
@@ -45,6 +46,25 @@
 #etat-onglet.update(none)
 #etat-phase.update(none)
 #etat-validation-pied.update("")
+
+// --- Avant-propos (registre narratif, charte §0) : front-matter, avant le
+// Sommaire. Même mécanisme que Sommaire/Glossaire ci-dessous - pas de phase
+// ni d'onglet actifs, libellé d'entête générique, vrai heading de niveau 1
+// pour l'index du PDF (les sections 1 à 7 sont des headings de niveau 2/3,
+// posés par avant-propos.typ). La numérotation de page continue celle du
+// reste du livret (elle repart à 1 sur sa première page, juste après la
+// couverture) : le "n / total" du pied et les numéros du sommaire restent
+// cohérents.
+// CONTRAINTE : l'Avant-propos doit compter un nombre PAIR de pages (12
+// aujourd'hui). S'il en compte un nombre impair, le #pagebreak(to: "odd") du
+// Sommaire insère une page blanche, et celle-ci porte alors l'entête
+// "Sommaire" (l'état est déjà mis à jour à ce stade - même limite que pour
+// le Glossaire, voir plus bas). À revérifier après toute retouche du texte.
+#etat-libelle-generique.update("Avant-propos")
+#pagebreak(weak: true, to: "odd")
+#titre-page-transversale("Avant-propos")
+#v(1em)
+#avant-propos()
 
 #etat-libelle-generique.update("Sommaire")
 #pagebreak(weak: true, to: "odd")

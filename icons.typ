@@ -14,8 +14,34 @@
       place(center + horizon, square(size: taille * 0.85, fill: couleur))
     } else if cle == "triangle" {
       place(center + horizon, polygon(fill: couleur, (c, 0mm), (taille, taille), (0mm, taille)))
+    } else if cle == "croix" {
+      // Croix droite (plus) : deux barres pleines se croisant au centre.
+      let long = taille * 0.92
+      let epais = taille * 0.32
+      place(center + horizon, rect(width: long, height: epais, fill: couleur))
+      place(center + horizon, rect(width: epais, height: long, fill: couleur))
+    } else if cle == "etoile" {
+      // Étoile à cinq branches, pleine : dix sommets alternés (pointes /
+      // creux), coordonnées absolues dans la boîte carrée `taille` comme le
+      // triangle. Rayon un peu plus grand que celui du cercle (une étoile
+      // pleine paraît plus légère à surface égale), recentrée à la main :
+      // l'étendue verticale d'une étoile n'est pas symétrique (pointe en
+      // haut = R, bas des deux branches = R*cos 36° = 0.809 R).
+      let rayon = taille * 0.54
+      let creux = rayon * 0.42
+      let cx = taille / 2
+      let cy = taille / 2 + 0.0955 * rayon
+      let sommets = range(10).map(i => {
+        let r = if calc.rem(i, 2) == 0 { rayon } else { creux }
+        let a = -90deg + i * 36deg
+        (cx + r * calc.cos(a), cy + r * calc.sin(a))
+      })
+      place(top + left, polygon(fill: couleur, ..sommets))
     } else {
-      place(center + horizon, circle(radius: c, fill: couleur))
+      // Plus de repli silencieux sur un cercle : une clé inconnue est une
+      // erreur de compilation (le repli avait masqué "croix" et "etoile",
+      // déclarées par dix fiches mais jamais dessinées).
+      panic("pictogramme-categorie : clé inconnue « " + str(cle) + " » (losange, cercle, carre, triangle, croix, etoile)")
     }
   ]
 }

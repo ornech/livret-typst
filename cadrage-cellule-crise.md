@@ -23,12 +23,13 @@ Dans ce profil, le « Coordinateur » du profil A se dédouble : un pilote de la
 
 ## II. Déclenchement et activation
 
-| #   | Règle                                                         | Application                                                                                                                |
-| --- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Seuil d'activation défini a priori                            | Ex. : SIEM confirme compromission avérée, ou impact sur service critique > X minutes.                                      |
-| 2   | Autorité de déclenchement nommée : un titulaire, un suppléant | Pas de collège délibérant avant activation.                                                                                |
-| 3   | Délai de convocation cible fixé                               | Ex. : cellule opérationnelle en place à H+30.                                                                              |
-| 4   | Premier acte formalisé                                        | Ouverture immédiate de la main courante + nomination du Coordinateur (profil A) ou des deux pilotes de cellule (profil B). |
+| #   | Règle                                                         | Application                                                                                                                                                                                                                                                                          |
+| --- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Seuil d'activation défini a priori                            | Ex. : SIEM confirme compromission avérée, ou impact sur service critique > X minutes.                                                                                                                                                                                                |
+| 2   | Autorité de déclenchement nommée : un titulaire, un suppléant | Pas de collège délibérant avant activation.                                                                                                                                                                                                                                          |
+| 3   | Délai de convocation cible fixé                               | Ex. : cellule opérationnelle en place à H+30.                                                                                                                                                                                                                                        |
+| 4   | Premier acte formalisé                                        | Ouverture immédiate de la main courante + nomination du Coordinateur (profil A) ou des deux pilotes de cellule (profil B).                                                                                                                                                           |
+| 5   | Canal de remontée avant déclenchement formel                  | Toute alerte transite par les équipes informatiques (ou le prestataire infogérant), qualifiée sans délai par le Référent technique (fiche « Mes premiers réflexes en cas d'incident cyber ») — jamais une remontée directe non qualifiée vers l'autorité de déclenchement (règle 2). |
 
 ---
 
@@ -43,18 +44,20 @@ Dans ce profil, le « Coordinateur » du profil A se dédouble : un pilote de la
 
 D = Décideur · C = Consulté avant décision · I = Informé après décision · E = Exécutant
 
-| Décision                                                  | D                     | C                                              | I                              | E              |
-| --------------------------------------------------------- | --------------------- | ---------------------------------------------- | ------------------------------ | -------------- |
-| Déclencher la cellule de crise                            | Tout membre pressenti | —                                              | Direction générale             | —              |
-| Couper un système / segmenter le réseau                   | Référent technique    | Coordinateur (si impact métier majeur)         | Historien                      | Équipes IT     |
-| Activer le PCA/PRA                                        | Coordinateur          | Référent technique, direction métier concernée | Cellule de crise               | Équipes métier |
-| Payer une rançon                                          | Direction générale    | Juridique, assureur, Coordinateur              | Cellule de crise               | —              |
-| Notifier la CNIL (violation de données)                   | Juridique             | Coordinateur, référent technique               | Direction générale             | Juridique      |
-| Notifier l'ANSSI / déposer plainte                        | Juridique             | Coordinateur                                   | Direction générale             | Juridique      |
-| Communiquer en externe (presse, réseaux sociaux, clients) | Porte-parole désigné  | Juridique (validation obligatoire)             | Cellule de crise               | Communication  |
-| Clore la cellule de crise                                 | Coordinateur          | Direction générale                             | Ensemble des parties prenantes | —              |
+| Décision                                                  | D                                                                                  | C                                                           | I                               | E              |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- | -------------- |
+| Déclencher la cellule de crise                            | Direction générale (profil A : le dirigeant ; profil B : la cellule décisionnelle) | Référent technique (qualification de l'alerte, §II règle 5) | Ensemble des membres pressentis | —              |
+| Couper un système / segmenter le réseau                   | Référent technique                                                                 | Coordinateur (si impact métier majeur)                      | Historien                       | Équipes IT     |
+| Activer le PCA/PRA                                        | Coordinateur                                                                       | Référent technique, direction métier concernée              | Cellule de crise                | Équipes métier |
+| Payer une rançon                                          | Direction générale                                                                 | Juridique, assureur, Coordinateur                           | Cellule de crise                | —              |
+| Notifier la CNIL (violation de données)                   | Juridique                                                                          | Coordinateur, référent technique                            | Direction générale              | Juridique      |
+| Notifier l'ANSSI / déposer plainte                        | Juridique                                                                          | Coordinateur                                                | Direction générale              | Juridique      |
+| Communiquer en externe (presse, réseaux sociaux, clients) | Porte-parole désigné                                                               | Juridique (validation obligatoire)                          | Cellule de crise                | Communication  |
+| Clore la cellule de crise                                 | Coordinateur                                                                       | Direction générale                                          | Ensemble des parties prenantes  | —              |
 
 > En profil B, lire « Coordinateur » comme le pilote de la cellule opérationnelle et « Direction générale » comme la cellule décisionnelle.
+
+> Les décisions D tenues par un rôle opérationnel (ex. : Référent technique sur « Couper un système / segmenter le réseau ») restent valables que la cellule de crise soit formellement déclenchée ou non — le rôle agit dès la détection, sur la base de la fiche « Mes premiers réflexes en cas d'incident cyber » (registre réflexe, hors mandat de la cellule formelle). Seul l'acte qui engage l'organisation comme telle — déclarer ou mobiliser formellement la cellule — relève d'un statut (§II) et attend l'autorité nommée, jamais un rôle en son absence.
 
 ---
 
